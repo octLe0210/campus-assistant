@@ -23,7 +23,18 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (token != null && token.startsWith("Bearer ")) {
             try {
                 Claims claims = jwtUtil.parseToken(token.substring(7));
-                request.setAttribute("userId", Long.valueOf(claims.getSubject()));
+                Long userId = Long.valueOf(claims.getSubject());
+                String role = claims.get("role", String.class);
+                request.setAttribute("userId", userId);
+                request.setAttribute("role", role);
+
+                String uri = request.getRequestURI();
+                if (uri.startsWith("/api/admin/") && !"admin".equals(role)) {
+                    response.setStatus(403);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"code\":403,\"message\":\"无管理员权限\"}");
+                    return false;
+                }
                 return true;
             } catch (Exception e) {
                 response.setStatus(401);

@@ -37,6 +37,23 @@
           <el-icon><Document /></el-icon>
           <span>学习计划</span>
         </el-menu-item>
+
+        <template v-if="userStore.user?.role === 'admin'">
+          <el-divider style="border-color:rgba(255,255,255,0.1);margin:8px 0" />
+          <div class="menu-subtitle" v-show="!isCollapse">系统管理</div>
+          <el-menu-item index="/admin/news">
+            <el-icon><EditPen /></el-icon>
+            <span>新闻管理</span>
+          </el-menu-item>
+          <el-menu-item index="/admin/courses">
+            <el-icon><EditPen /></el-icon>
+            <span>课程管理</span>
+          </el-menu-item>
+          <el-menu-item index="/admin/users">
+            <el-icon><User /></el-icon>
+            <span>用户管理</span>
+          </el-menu-item>
+        </template>
       </el-menu>
     </el-aside>
     <el-container>
@@ -155,6 +172,11 @@ function handleCommand(cmd) {
 .username {
   font-size: 14px;
   color: #303133;
+}
+.menu-subtitle {
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  padding: 8px 20px 4px;
 }
 .layout-main {
   background: #f0f2f5;

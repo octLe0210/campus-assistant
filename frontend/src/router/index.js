@@ -53,6 +53,24 @@ const routes = [
         name: 'StudyPlan',
         component: () => import('@/views/StudyPlan.vue'),
         meta: { title: '学习计划' }
+      },
+      {
+        path: 'admin/news',
+        name: 'AdminNews',
+        component: () => import('@/views/AdminNews.vue'),
+        meta: { title: '新闻管理', requireAdmin: true }
+      },
+      {
+        path: 'admin/courses',
+        name: 'AdminCourses',
+        component: () => import('@/views/AdminCourses.vue'),
+        meta: { title: '课程管理', requireAdmin: true }
+      },
+      {
+        path: 'admin/users',
+        name: 'AdminUsers',
+        component: () => import('@/views/AdminUsers.vue'),
+        meta: { title: '用户管理', requireAdmin: true }
       }
     ]
   }
@@ -68,6 +86,19 @@ router.beforeEach((to, from, next) => {
   if (to.path !== '/login' && !token) {
     next('/login')
   } else if (to.path === '/login' && token) {
+    next('/home')
+  } else if (to.meta.requireAdmin) {
+    const cached = localStorage.getItem('user')
+    if (cached) {
+      try {
+        const state = JSON.parse(cached)
+        const role = state.user?.role || state.role
+        if (role === 'admin') {
+          next()
+          return
+        }
+      } catch {}
+    }
     next('/home')
   } else {
     next()

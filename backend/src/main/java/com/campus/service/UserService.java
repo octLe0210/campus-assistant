@@ -31,7 +31,7 @@ public class UserService {
         if (!user.getPassword().equals(md5Password)) {
             throw new RuntimeException("密码错误");
         }
-        String token = jwtUtil.generateToken(user.getId(), user.getUsername());
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
         user.setPassword(null);
