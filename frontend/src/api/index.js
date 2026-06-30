@@ -27,8 +27,11 @@ request.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       window.location.href = '/login'
+    } else if (error.response?.status === 403) {
+      ElMessage.warning('权限不足')
+    } else {
+      ElMessage.error('网络错误，请检查服务是否启动')
     }
-    ElMessage.error('网络错误')
     return Promise.reject(error)
   }
 )

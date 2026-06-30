@@ -248,16 +248,18 @@ onMounted(async () => {
     todayCourses.value = (Array.isArray(courseRes.data) ? courseRes.data : []).slice(0, 6)
     statCards.value[0].num = todayCourses.value.length
 
-    // 尝试获取统计数据
-    try {
-      const stats = await getStatistics()
-      if (stats.data) {
-        statCards.value[0].num = stats.data.courseCount || statCards.value[0].num
-        statCards.value[1].num = stats.data.classroomCount || statCards.value[1].num
-        statCards.value[2].num = stats.data.newsCount || statCards.value[2].num
-        statCards.value[3].num = stats.data.userCount || statCards.value[3].num
-      }
-    } catch {}
+    // 仅管理员获取全局统计数据
+    if (userStore.user?.role === 'admin') {
+      try {
+        const stats = await getStatistics()
+        if (stats.data) {
+          statCards.value[0].num = stats.data.courseCount || statCards.value[0].num
+          statCards.value[1].num = stats.data.classroomCount || statCards.value[1].num
+          statCards.value[2].num = stats.data.newsCount || statCards.value[2].num
+          statCards.value[3].num = stats.data.userCount || statCards.value[3].num
+        }
+      } catch {}
+    }
   } catch {}
 })
 
