@@ -1,0 +1,8 @@
+#!/bin/sh
+# Maven Wrapper script
+MAVEN_PROJECTBASEDIR=$(dirname "$0")
+MAVEN_OPTS="-Xmx512m"
+export MAVEN_PROJECTBASEDIR
+export MAVEN_OPTS
+
+exec "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" "$@"
